@@ -28,7 +28,7 @@
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
-(setq doom-font (font-spec :family "Iosevka" :size 30 :weight 'normal))
+(setq doom-font (font-spec :family "Iosevka" :size 16 :weight 'normal))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -44,7 +44,7 @@
 (setq org-directory "~/org/")
 
 ;; No title bar
-(add-to-list 'default-frame-alist '(undecorated . t))
+;(add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; Focus follows mouse
 (setq mouse-autoselect-window t)
@@ -98,3 +98,8 @@
   (require 'tree-sitter-langs)
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(require 'dap-gdb-lldb)
+
+
+(setq evil-ex-substitute-global t)
