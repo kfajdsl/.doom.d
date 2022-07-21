@@ -29,6 +29,9 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 (setq doom-font (font-spec :family "Iosevka" :size 16 :weight 'normal))
+(setq doom-themes-treemacs-enable-variable-pitch nil)
+(setq doom-themes-treemacs-theme "doom-colors")
+
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -82,6 +85,7 @@
 ;; they are implemented.
 
 (map! :nvm ";" #'evil-ex)
+(map! :nvm "." #'evil-snipe-repeat)
 
 (map! :g "M-h" #'evil-window-left
       :g "M-j" #'evil-window-down
@@ -99,7 +103,31 @@
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
-(require 'dap-gdb-lldb)
+(use-package! lsp
+  :config
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd-12")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd12-remote)))
+
+(use-package! magit
+  :config
+  (magit-add-section-hook 'magit-status-sections-hook
+                          'magit-insert-modules-overview
+                          'magit-insert-unpulled-from-upstream))
+
+(use-package! evil-snipe
+  :config
+  (setq evil-snipe-spillover-scope 'visible))
+
+;(require 'dap-gdb-lldb)
 
 
+(setq c-doc-comment-style '((java-mode . javadoc)
+                            (pike-mode . autodoc)
+                            (c-mode . doxygen)
+                            (c++-mode . doxygen)))
 (setq evil-ex-substitute-global t)
+
+(add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
