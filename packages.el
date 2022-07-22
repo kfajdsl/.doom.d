@@ -54,3 +54,5 @@
 
 (package! shx)
 (package! bazel)
+(package! xterm-color)
+(package! ninja-mode)
