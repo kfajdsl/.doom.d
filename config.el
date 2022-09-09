@@ -47,7 +47,7 @@
 (setq org-directory "~/org/")
 
 ;; No title bar
-;(add-to-list 'default-frame-alist '(undecorated . t))
+(add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; Focus follows mouse
 (setq mouse-autoselect-window t)
@@ -131,6 +131,7 @@
 (setq evil-ex-substitute-global t)
 
 (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.Dockerfile\\'" . dockerfile-mode))
 
 (use-package! shx
   :config
@@ -148,3 +149,13 @@
               (make-local-variable 'font-lock-function)
               (setq font-lock-function (lambda (_) nil))
               (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t))))
+
+(use-package! neotree
+  :config
+  (setq neo-autorefresh t)
+  (setq neo-theme 'ascii)
+  ;(setq doom-themes-neotree-file-icons nil)
+  ;(setq doom-themes-neotree-enable-folder-icons nil)
+  (setq doom-themes-neotree-enable-type-colors t)
+  (setq doom-themes-neotree-enable-variable-pitch nil)
+  )
