@@ -31,6 +31,8 @@
 (setq doom-font (font-spec :family "Iosevka" :size 16 :weight 'normal))
 (setq doom-themes-treemacs-enable-variable-pitch nil)
 (setq doom-themes-treemacs-theme "doom-colors")
+(setq treemacs-collapse-dirs 10)
+
 
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -133,14 +135,55 @@
 (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.Dockerfile\\'" . dockerfile-mode))
 
-(use-package! shx
+;(use-package! shx
+;  :config
+;  (add-hook 'shell-mode-hook 'shx-mode)
+;
+;  ;(set-popup-rules!
+;  ;  '(("^\\*my:shx-popup"  ; editing buffers (interaction required)
+;  ;     :vslot -5 :size 0.35 :select t :modeline nil :quit nil :ttl nil)))
+;  ;(defun my/shell-toggle (&optional command)
+;  ;  "Toggle a persistent terminal popup window.
+;
+;  ;  If popup is visible but unselected, selected it.
+;  ;  If popup is focused, kill it."
+;  ;  (interactive)
+;  ;  (let ((buffer
+;  ;         (get-buffer-create
+;  ;          (format "*doom:shell-popup:%s*"
+;  ;                  (if (bound-and-true-p persp-mode)
+;  ;                      (safe-persp-name (get-current-persp))
+;  ;                    "main"))))
+;  ;        (dir default-directory))
+;  ;    (if-let (win (get-buffer-window buffer))
+;  ;        (let (confirm-kill-processes)
+;  ;          (set-process-query-on-exit-flag (get-buffer-process buffer) nil)
+;  ;          (delete-window win)
+;  ;          (ignore-errors (kill-buffer buffer)))
+;  ;      (with-current-buffer buffer
+;  ;        (if (not (eq major-mode 'shell-mode))
+;  ;            (shx buffer)
+;  ;          (cd dir)
+;  ;          (run-mode-hooks 'shell-mode-hook)))
+;  ;      (pop-to-buffer buffer))
+;  ;    (when-let (process (get-buffer-process buffer))
+;  ;      (set-process-sentinel process #'+shell--sentinel)
+;  ;      (+shell--send-input buffer command))))
+;  (map! :leader
+;        (:prefix-map ("o" . "open")
+;         :desc "Open shell here" "T" #'shx)))
+
+(use-package!  bash-completion
   :config
-  (add-hook 'shell-mode-hook 'shx-mode))
+  (bash-completion-setup))
 
 (use-package! xterm-color
   :config
   (setq comint-output-filter-functions
         (remove 'ansi-color-process-output comint-output-filter-functions))
+  (setq tramp-terminal-type "xterm-256color")
+  (setq compilation-environment '("TERM=xterm-256color"))
+
   (add-hook 'shell-mode-hook
             (lambda ()
               ;; Disable font-locking in this buffer to improve performance
@@ -149,13 +192,12 @@
               (make-local-variable 'font-lock-function)
               (setq font-lock-function (lambda (_) nil))
               (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t))))
+(defun my/advice-compilation-filter (f proc string)
+  (funcall f proc (xterm-color-filter string)))
 
-(use-package! neotree
+(advice-add 'compilation-filter :around #'my/advice-compilation-filter)
+(setq-default explicit-shell-file-name "/bin/bash")
+
+(use-package! meson-mode
   :config
-  (setq neo-autorefresh t)
-  (setq neo-theme 'ascii)
-  ;(setq doom-themes-neotree-file-icons nil)
-  ;(setq doom-themes-neotree-enable-folder-icons nil)
-  (setq doom-themes-neotree-enable-type-colors t)
-  (setq doom-themes-neotree-enable-variable-pitch nil)
-  )
+  (add-hook 'meson-mode-hook 'company-mode))

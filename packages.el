@@ -3,6 +3,11 @@
 
 (package! tree-sitter)
 (package! tree-sitter-langs)
+(package! bazel)
+(package! xterm-color)
+(package! ninja-mode)
+(package! bash-completion)
+(package! meson-mode)
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
 ;; on the command line, then restart Emacs for the changes to take effect -- or
@@ -52,7 +57,4 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! shx)
-(package! bazel)
-(package! xterm-color)
-(package! ninja-mode)
+;(package! shx)

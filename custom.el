@@ -14,7 +14,7 @@
      (dockerfile-image-name . "ksuevt/ros-galactic-dev")
      (dockerfile-image-name . "ksuevt/ros-galactic-base")
      (dockerfile-image-name . "ai/scrimmage")))
- '(warning-suppress-types '((comp) (comp) (comp))))
+ '(warning-suppress-types '((initialization) (initialization) (comp) (comp) (comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
